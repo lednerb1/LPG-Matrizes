@@ -96,7 +96,7 @@ void criaMatriz(Matriz * matriz, Elemento * elementos){
 
 }
 
-int menu(){
+int menu(char nome[2][50]){
 	int aux;
 	system("clear");
 	printf("O que deseja?\n\n");
@@ -108,6 +108,9 @@ int menu(){
 	printf("\t6: Subtrair matrizes\n");
 	printf("\t7: Multiplicar matrizes\n");
 	printf("\t0: Sair\n\n");
+	if(nome[0][0]){
+		printf("Arquivos carregados: %s / %s\n\n", nome[0], nome[1]);
+	}
 	printf("In: ");
 	scanf("%d", &aux);
 	system("clear");
@@ -120,18 +123,39 @@ void carregar(FILE *arquivo[2], char nome[2][50]){
 	printf("Digite o nome do arquivo para ser carregado\nIn: ");
 	if(!nome[0][0]){
 		scanf("%s", nome[0]);
+		if(!(arquivo[0] = fopen(nome[0], "r"))){
+			printf("Arquivo nao encontrado, ENTER para voltar\n");
+			getchar();
+			getchar();
+			nome[0][0] = '\0';
+			return;
+		}
 		printf("Deseja carregar o segundo arquivo?\nS/N: ");
 		getchar();
 		scanf("%c", &aux);
 		if(aux == 'S' || aux == 's'){
 			printf("Digite o nome do segundo arquivo\nIn: ");
 			scanf("%s", nome[1]);
+			if(!(arquivo[1] = fopen(nome[1], "r"))){
+				printf("Arquivo nao encontrado, ENTER para voltar\n");
+				getchar();
+				getchar();
+				nome[1][0] = '\0';
+				return;
+			}
 		}else{
 			return;
 		}
 	return;
 	}if(!nome[1][0]){
 		scanf("%s", nome[1]);
+		if(!(arquivo[1] = fopen(nome[1], "r"))){
+			printf("Arquivo nao encontrado, ENTER para voltar\n");
+			getchar();
+			getchar();
+			nome[1][0] = '\0';
+			return;
+		}
 	}else{
 		printf("\n\nErro: Todos arquivos lidos, ENTER para continuar\n");
 		getchar();
@@ -153,7 +177,7 @@ int main(int argc, char const *argv[])
 
 	int op;
 	do{
-		op = menu();
+		op = menu(nome);
 		
 		switch(op){
 			case 0:
