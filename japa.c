@@ -37,7 +37,7 @@ int find(FILE * arquivo){
 	return count;
 }
 
-Elemento * carregar(FILE * arquivo, Matriz ** tamanho){
+Elemento * definirElementos(FILE * arquivo, Matriz ** tamanho){
 	int i, j;
 	int aux;
 	int count=0;
@@ -61,7 +61,7 @@ Elemento * carregar(FILE * arquivo, Matriz ** tamanho){
 	return temp;
 }
 
-void printaMatriz(Matriz * matriz, Elemento * elementos){
+void criaMatriz(Matriz * matriz, Elemento * elementos){
 
 	int i;
 	int j;
@@ -96,20 +96,80 @@ void printaMatriz(Matriz * matriz, Elemento * elementos){
 
 }
 
+int menu(){
+	int aux;
+	system("clear");
+	printf("O que deseja?\n\n");
+	printf("\t1: Carregar uma matriz\n");
+	printf("\t2: Visualizar uma matriz\n");
+	printf("\t3: Modificar uma matriz\n");
+	printf("\t4: Salvar uma matriz\n");
+	printf("\t5: Somar matrizes\n");
+	printf("\t6: Subtrair matrizes\n");
+	printf("\t7: Multiplicar matrizes\n");
+	printf("\t0: Sair\n\n");
+	printf("In: ");
+	scanf("%d", &aux);
+	system("clear");
+	return aux;
+}
+
+void carregar(FILE *arquivo[2], char nome[2][50]){
+
+	char aux;
+	printf("Digite o nome do arquivo para ser carregado\nIn: ");
+	if(!nome[0][0]){
+		scanf("%s", nome[0]);
+		printf("Deseja carregar o segundo arquivo?\nS/N: ");
+		getchar();
+		scanf("%c", &aux);
+		if(aux == 'S' || aux == 's'){
+			printf("Digite o nome do segundo arquivo\nIn: ");
+			scanf("%s", nome[1]);
+		}else{
+			return;
+		}
+	return;
+	}if(!nome[1][0]){
+		scanf("%s", nome[1]);
+	}else{
+		printf("\n\nErro: Todos arquivos lidos, ENTER para continuar\n");
+		getchar();
+		getchar();
+	}
+}
+
 int main(int argc, char const *argv[])
 {
-	FILE * arquivo = NULL;
+
+	// if(argc < 3){
+	// 	printf("inicie os arquvos\n");
+	// 	exit(1);
+	// }
+	char nome[2][50] = {"\0", "\0"};
+	FILE * arquivo[2] = {NULL, NULL};
 	Matriz * _m = malloc(sizeof(Matriz));
 	Elemento * posicoes = NULL;
-	if(argc < 2){
-		printf("inicie os arquvos\n");
-		exit(1);
-	}
 
-	arquivo = fopen(argv[1], "r");
-	posicoes = carregar(arquivo, &_m);
+	int op;
+	do{
+		op = menu();
+		
+		switch(op){
+			case 0:
+			break;
+			case 1:
+			carregar(arquivo, nome);
+			printf("%s\n%s\n", nome[0], nome[1]);
 
-	printaMatriz(_m, posicoes);
+		}
+
+	}while(op);
+
+	//arquivo = fopen(argv[1], "r");
+	//posicoes = definirElementos(arquivo, &_m);
+
+	//criaMatriz(_m, posicoes);
 
 	return 0;
 }
